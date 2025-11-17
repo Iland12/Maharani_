@@ -1,20 +1,40 @@
 const express = require("express");
 const fs = require("fs");
-const path = require("path");
 const app = express();
 
 app.use(express.json());
-app.use(express.static(__dirname)); // serve index.html
+app.use(express.static("."));
 
-app.post("/submit", (req, res) => {
-  const feedbackData = JSON.stringify(req.body) + "\n";
-  fs.appendFileSync("feedback.json", feedbackData);
-  res.json({ message: "Feedback saved!" });
+app.post("/save-feedback", (req, res) => {
+  const feedback = req.body.feedback;
+
+  const entry = {
+    feedback: feedback,
+    time: new Date().toLocaleString(),
+  };
+
+  let data = JSON.parse(fs.readFileSync("feedback.json"));
+  data.push(entry);
+
+  fs.writeFileSync("feedback.json", JSON.stringify(data, null, 2));
+
+  res.send("Feedback saved");
 });
 
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+app.post("/save-name", (req, res) => {
+  const name = req.body.name;
+
+  const entry = {
+    name: name,
+    time: new Date().toLocaleString(),
+  };
+
+  let data = JSON.parse(fs.readFileSync("feedback.json"));
+  data.push(entry);
+
+  fs.writeFileSync("feedback.json", JSON.stringify(data, null, 2));
+
+  res.send("Name saved");
 });
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => console.log("Server running on port " + port));
+app.listen(3000, () => console.log("Server running on http://localhost:3000"));
