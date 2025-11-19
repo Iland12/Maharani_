@@ -6,7 +6,19 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.18.2",
+    "express": "^4.21.2",
     "nodemailer": "^7.0.10"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Iland12/Maharani_.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Iland12/Maharani_/issues"
+  },
+  "homepage": "https://github.com/Iland12/Maharani_#readme",
+  "description": ""
 }
