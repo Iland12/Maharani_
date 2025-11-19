@@ -1,44 +1,52 @@
 const express = require("express");
-const bodyParser = require("body-parser");
-const cors = require("cors");
 const fs = require("fs");
-
 const app = express();
-app.use(cors());
-app.use(bodyParser.json());
-app.use(express.static(__dirname)); // allow index.html
+
+app.use(express.json());
+app.use(express.static("."));
+
+// Safe file reading
+function readData() {
+  try {
+    return JSON.parse(fs.readFileSync("feedback.json"));
+  } catch (e) {
+    return [];
+  }
+}
 
 app.post("/save-feedback", (req, res) => {
-    const { feedback, name } = req.body;
+  const feedback = req.body.feedback;
 
-    let data = [];
+  const entry = {
+    feedback,
+    time: new Date().toLocaleString(),
+  };
 
-    try {
-        if (fs.existsSync("feedback.json")) {
-            data = JSON.parse(fs.readFileSync("feedback.json"));
-        }
-    } catch (err) {
-        console.log("Error reading feedback.json:", err);
-    }
+  let data = readData();
+  data.push(entry);
 
-    const entry = {
-        name,
-        feedback,
-        time: new Date().toLocaleString()
-    };
+  fs.writeFileSync("feedback.json", JSON.stringify(data, null, 2));
 
-    data.push(entry);
-
-    fs.writeFileSync("feedback.json", JSON.stringify(data, null, 2));
-
-    res.json({ message: "Feedback saved!" });
+  res.send("Feedback saved");
 });
 
-app.listen(3000, () => {
-    console.log("Server running on port 3000");
-});
-<<<<<<< HEAD
+app.post("/save-name", (req, res) => {
+  const name = req.body.name;
 
-app.listen(process.env.PORT || 3000, () => console.log("Server running"));
-=======
->>>>>>> 1d8f46b068e8fae7b102eaf364c9f0a187cb46ed
+  const entry = {
+    name,
+    time: new Date().toLocaleString(),
+  };
+
+  let data = readData();
+  data.push(entry);
+
+  fs.writeFileSync("feedback.json", JSON.stringify(data, null, 2));
+
+  res.send("Name saved");
+});
+
+// Render-compatible port
+app.listen(process.env.PORT || 3000, () =>
+  console.log("Server running")
+);
