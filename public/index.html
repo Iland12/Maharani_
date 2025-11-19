@@ -7,7 +7,7 @@
       body {
         margin: 0;
         padding: 0;
-        background: linear-gradient(135deg, #ff9acb, #ff5e9c);
+        background: linear-gradient(135deg, #ff9acb, #ff0062);
         font-family: "Poppins", sans-serif;
         display: flex;
         justify-content: center;
@@ -19,28 +19,30 @@
 
       .container {
         background: rgba(255, 255, 255, 0.2);
-        padding: 40px;
+        padding: 40px 40px;
         border-radius: 20px;
         backdrop-filter: blur(12px);
         width: 350px;
         text-align: center;
-        box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+        box-shadow: 0 0 20px rgba(100, 99, 99, 0.4);
+        overflow: hidden;
       }
 
       h1 {
-        margin-bottom: 20px;
-        font-size: 28px;
+        font-size: 20px;
+        font-weight: 900;
+        padding: 0pc;
       }
 
       button {
-        padding: 12px 25px;
+        padding: 12px 20px;
         border: none;
         background: #ff0077;
         color: white;
         font-size: 18px;
         border-radius: 10px;
         cursor: pointer;
-        margin-bottom: 20px;
+        margin-top: 20px;
         transition: 0.3s;
       }
 
@@ -48,15 +50,68 @@
         background: #ff0055;
         transform: scale(1.05);
       }
-
-      #loveText {
-        font-size: 18px;
-        margin-bottom: 20px;
-        font-weight: bold;
+      #mysong {
+        display: none;
       }
 
+      #loveText {
+        color: black;
+        font-size: 1.6rem;
+        font-family: "Poppins", sans-serif;
+        font-weight: 800;
+        border-radius: 10px;
+        padding: 5px;
+        margin-bottom: 20px;
+        font-weight: bold;
+        animation: heartbeatGlow 3s infinite ease-in-out;
+      }
+      #tap {
+        margin-bottom: 2rem;
+        color: red;
+        background-color: white;
+        font-size: 2rem;
+        font-weight: 800;
+        animation: haha 2s infinite ease-in-out;
+      }
+
+      @keyframes haha {
+        0% {
+          transform: scale(0.5);
+        }
+
+        50% {
+          transform: scale(0.6);
+        }
+
+        100% {
+          transform: scale(0.5);
+        }
+      }
+
+      @keyframes heartbeatGlow {
+        0% {
+          transform: scale(1);
+          box-shadow: 0 0 10px rgba(255, 0, 119, 0.4);
+        }
+
+        50% {
+          transform: scale(1.2);
+          box-shadow: 0 0 10px rgba(255, 0, 119, 0.4);
+        }
+
+        100% {
+          transform: scale(1);
+          box-shadow: 0 0 10px rgba(255, 0, 119, 0.4);
+        }
+      }
+      .feedback {
+        width: 20.5rem;
+      }
       input,
       textarea {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         width: 100%;
         padding: 12px;
         border-radius: 10px;
@@ -95,41 +150,104 @@
           opacity: 0;
         }
       }
+
+      @media (max-width: 786px) {
+        .container {
+          width: 25rem;
+        }
+        .feedback {
+          width: 23.5rem;
+        }
+      }
+      @media (max-width: 480px) {
+        .container {
+          width: 20rem;
+        }
+        .feedback {
+          width: 18.5rem;
+        }
+      }
+      @media (max-width: 390px) {
+        .container {
+          width: 15rem;
+          height: 75vh;
+        }
+        .feedback {
+          width: 13.5rem;
+        }
+        button {
+          margin-top: 0.8rem;
+        }
+        #loveText,
+        #tap {
+          margin-bottom: 0;
+          font-size: 1.5rem;
+        }
+
+        textarea {
+          height: 100px;
+          resize: none;
+        }
+      }
     </style>
   </head>
   <body>
     <div class="container">
-      <h1>💗 Love for Maharani 💗</h1>
+      <h1>💗 Maharani gi nungC paojel 💗</h1>
 
-      <button onclick="showLove()">Tap to See Love</button>
+      <button id="tap" onclick="showLove()">Tap to See Love</button>
       <div id="loveText"></div>
 
-      <h3 style="margin-top: 20px">Send Private Feedback</h3>
+      <h3
+        style="
+          margin-top: 20px;
+          color: green;
+          margin-top: 2rem;
+          font-weight: 700;
+        "
+      >
+        Feedback macha amamm ta makha da thadabirmmu 🙏
+      </h3>
+      <audio id="mysong" controls loop>
+        <source src="./LanadelRay.mp3" type="audio/mpeg" />
+        Your browser does not support the audio element.
+      </audio>
 
-      <input type="text" id="name" placeholder="Your Name" />
-      <textarea id="feedback" placeholder="Your message..."></textarea>
-
+      <div class="feedback">
+        <input type="text" id="name" placeholder="Your Name" />
+        <textarea id="feedback" placeholder="Your message..."></textarea>
+      </div>
       <button onclick="sendFeedback()">Send ➤</button>
 
       <div id="msg"></div>
     </div>
 
     <script>
-      function showLove() {
+      const button = document.querySelector("#tap");
+      const song = document.querySelector("#mysong");
+
+      button.addEventListener("click", () => {
+        // Play the song
+        song.play();
+
+        // Hide the button
+        button.style.display = "none";
+
+        // Show love text
         document.getElementById("loveText").innerHTML =
-          "❤️ Maharani, you are the most beautiful part of my life. ❤️";
-      }
+          "❤️ Maharani ubada atoppa shkhenbi ga loi kwbini. ❤️";
 
-      // Floating hearts
-      setInterval(() => {
-        const heart = document.createElement("div");
-        heart.innerHTML = "❤️";
-        heart.classList.add("heart");
-        heart.style.left = Math.random() * window.innerWidth + "px";
-        document.body.appendChild(heart);
+        // Start floating hearts only after click
+        setInterval(() => {
+          const heart = document.createElement("div");
+          heart.classList.add("heart");
+          heart.innerHTML = "❤️";
+          heart.style.left = Math.random() * window.innerWidth + "px";
+          document.body.appendChild(heart);
 
-        setTimeout(() => heart.remove(), 5000);
-      }, 500);
+          setTimeout(() => heart.remove(), 5000);
+        }, 500);
+      });
 
       // Send Feedback
       async function sendFeedback() {
