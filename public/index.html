@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Love for Maharani 💖</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #ff9acb, #ff5e9c);
+        font-family: "Poppins", sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        color: white;
+        overflow: hidden;
+      }
+
+      .container {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 40px;
+        border-radius: 20px;
+        backdrop-filter: blur(12px);
+        width: 350px;
+        text-align: center;
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+      }
+
+      h1 {
+        margin-bottom: 20px;
+        font-size: 28px;
+      }
+
+      button {
+        padding: 12px 25px;
+        border: none;
+        background: #ff0077;
+        color: white;
+        font-size: 18px;
+        border-radius: 10px;
+        cursor: pointer;
+        margin-bottom: 20px;
+        transition: 0.3s;
+      }
+
+      button:hover {
+        background: #ff0055;
+        transform: scale(1.05);
+      }
+
+      #loveText {
+        font-size: 18px;
+        margin-bottom: 20px;
+        font-weight: bold;
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        padding: 12px;
+        border-radius: 10px;
+        border: none;
+        margin-top: 10px;
+        font-size: 16px;
+      }
+
+      textarea {
+        height: 120px;
+        resize: none;
+      }
+
+      #msg {
+        margin-top: 10px;
+        font-weight: bold;
+        color: #00ffae;
+      }
+
+      /* floating hearts */
+      .heart {
+        position: absolute;
+        color: #ff0066;
+        font-size: 20px;
+        animation: float 5s linear infinite;
+        opacity: 0.7;
+      }
+
+      @keyframes float {
+        from {
+          transform: translateY(0) translateX(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateY(-800px) translateX(50px);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>💗 Love for Maharani 💗</h1>
+
+      <button onclick="showLove()">Tap to See Love</button>
+      <div id="loveText"></div>
+
+      <h3 style="margin-top: 20px">Send Private Feedback</h3>
+
+      <input type="text" id="name" placeholder="Your Name" />
+      <textarea id="feedback" placeholder="Your message..."></textarea>
+
+      <button onclick="sendFeedback()">Send ➤</button>
+
+      <div id="msg"></div>
+    </div>
+
+    <script>
+      function showLove() {
+        document.getElementById("loveText").innerHTML =
+          "❤️ Maharani, you are the most beautiful part of my life. ❤️";
+      }
+
+      // Floating hearts
+      setInterval(() => {
+        const heart = document.createElement("div");
+        heart.innerHTML = "❤️";
+        heart.classList.add("heart");
+        heart.style.left = Math.random() * window.innerWidth + "px";
+        document.body.appendChild(heart);
+
+        setTimeout(() => heart.remove(), 5000);
+      }, 500);
+
+      // Send Feedback
+      async function sendFeedback() {
+        const name = document.getElementById("name").value.trim();
+        const message = document.getElementById("feedback").value.trim();
+
+        if (!name || !message) {
+          alert("Please enter name and message.");
+          return;
+        }
+
+        const res = await fetch("/api/feedback", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, message }),
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+          document.getElementById("msg").innerHTML = "💚 Sent successfully!";
+          document.getElementById("name").value = "";
+          document.getElementById("feedback").value = "";
+        } else {
+          document.getElementById("msg").innerHTML = "❌ Error!";
+        }
+      }
+    </script>
+  </body>
+</html>
