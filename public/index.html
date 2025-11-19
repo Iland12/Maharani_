@@ -259,11 +259,14 @@
           return;
         }
 
-        const res = await fetch("/api/feedback", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, message }),
-        });
+        const res = await fetch(
+          "https://maharani-2.onrender.com/api/feedback",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, message }),
+          }
+        );
 
         const data = await res.json();
 
