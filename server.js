@@ -5,24 +5,15 @@ const app = express();
 app.use(express.json());
 app.use(express.static("."));
 
-// Safe file reading
-function readData() {
-  try {
-    return JSON.parse(fs.readFileSync("feedback.json"));
-  } catch (e) {
-    return [];
-  }
-}
-
 app.post("/save-feedback", (req, res) => {
   const feedback = req.body.feedback;
 
   const entry = {
-    feedback,
+    feedback: feedback,
     time: new Date().toLocaleString(),
   };
 
-  let data = readData();
+  let data = JSON.parse(fs.readFileSync("feedback.json"));
   data.push(entry);
 
   fs.writeFileSync("feedback.json", JSON.stringify(data, null, 2));
@@ -34,11 +25,11 @@ app.post("/save-name", (req, res) => {
   const name = req.body.name;
 
   const entry = {
-    name,
+    name: name,
     time: new Date().toLocaleString(),
   };
 
-  let data = readData();
+  let data = JSON.parse(fs.readFileSync("feedback.json"));
   data.push(entry);
 
   fs.writeFileSync("feedback.json", JSON.stringify(data, null, 2));
@@ -46,7 +37,4 @@ app.post("/save-name", (req, res) => {
   res.send("Name saved");
 });
 
-// Render-compatible port
-app.listen(process.env.PORT || 3000, () =>
-  console.log("Server running")
-);
+app.listen(3000, () => console.log("Server running on http://localhost:3000"));
